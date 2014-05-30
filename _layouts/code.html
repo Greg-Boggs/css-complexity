@@ -1,0 +1,40 @@
+<?php
+session_start();
+
+if ( empty($_GET['url'])  ) {
+  header('Location: /?error=url');
+}
+if ( empty($_GET['email']) ) {
+  header('Location: /?error=email');
+}
+
+/** Validate captcha */
+if ( !$_SESSION['human'] && (empty($_REQUEST['captcha'])
+    || empty($_SESSION['captcha'])
+    || trim(strtolower($_REQUEST['captcha'])) != $_SESSION['captcha']) ) {
+  header('Location: /?error=captcha');
+} else {
+  $_SESSION['human'] = true;
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+
+{% include head.html %}
+
+<body>
+
+{% include header.html %}
+
+<div class="page-content">
+    <div class="wrap">
+        {{ content }}
+    </div>
+</div>
+
+{% include footer.html %}
+
+</body>
+</html>
