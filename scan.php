@@ -13,22 +13,43 @@ layout: default
       header('Location: /?error=content');
     }
   }
-  $matches = array(
-    'font-size' => substr_count($content, 'font-size'),
-    'color' => substr_count($content, 'color'),
+  $tests = array(
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'margin',
+    'padding',
+    'margin',
+    'padding: 0',
+    'margin: 0',
+    'font',
+    'font-size',
+    'font-family',
+    '!important',
+    'color',
+    'hex',
+    '#fff',
+    '#ffffff',
+    'background',
   );
+  foreach ($tests as $test) {
+    $matches[$test] = substr_count($content, $test);
+  }
 
 ?>
 <div class="wrap">
   <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $target; ?>&email=<?php echo $email; ?>">Rescan</a>
   <fieldset class="results">
     <legend>Scan Results for <?php echo $url; ?></legend>
-    <ol>
+    <ul>
       <?php foreach ($matches as $key => $match) { ?>
         <li><?php echo "$key: $match"; ?></li>
       <?php
         }
       ?>
-    </ol>
+    </ul>
   </fieldset>
 </div>

@@ -499,3 +499,7 @@ legend {
 .results {
   width:600px;
 }
+
+ul { list-style-type: none; }
+
+li { margin: 0 0 10px 20px; }

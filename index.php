@@ -8,7 +8,7 @@ layout: default
             <legend>CSS Complexity Calculator</legend>
             <div id="divTxt">
                 <div>
-                    <label for="url">Website:</label>
+                    <label for="url">CSS file:</label>
                     <input class="input" name="url" id="url" />
                 </div>
             </div>
