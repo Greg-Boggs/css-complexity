@@ -3,6 +3,7 @@ layout: default
 ---
 <?php
   include ("lib/functions.php");
+  $total = 0;
   $target = strip_tags($_GET['url']);
   $email = strip_tags($_GET['email']);
   $url = wash_url($target);
@@ -32,13 +33,14 @@ layout: default
     'color',
     'hex',
     '#fff',
-    '#ffffff',
     'background',
   );
-  foreach ($tests as $test) {
-    $matches[$test] = substr_count($content, $test);
-  }
 
+  //TODO: add total rules
+  foreach ($tests as $test) {
+    $matches[$test] = $count = substr_count($content, $test);
+  }
+  $total += $count;
 ?>
 <div class="wrap">
   <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $target; ?>&email=<?php echo $email; ?>">Rescan</a>
@@ -50,6 +52,9 @@ layout: default
       <?php
         }
       ?>
+    </ul>
+    <ul>
+        <li>Total: <?php echo $total; ?></li>
     </ul>
   </fieldset>
 </div>
