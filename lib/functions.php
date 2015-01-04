@@ -42,8 +42,9 @@ function get_page($url) {
 }
 
 function post_page($url, $user, $pass) {
+    $post_items = array();
 
-    //create array of data to be posted
+    // Data to be posted.
     $post_data['log'] = $user;
     $post_data['pwd'] = $pass;
 
@@ -76,4 +77,12 @@ function post_page($url, $user, $pass) {
     curl_close($curl_connection);
 
     return $result;
+}
+
+/* Trick get the size of a file */
+function get_size($var) {
+    $start_memory = memory_get_usage();
+    $var = unserialize(serialize($var));
+
+    return memory_get_usage() - $start_memory - PHP_INT_SIZE * 8;
 }

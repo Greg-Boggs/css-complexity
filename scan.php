@@ -4,9 +4,12 @@ layout: default
 <?php
   include ("lib/functions.php");
   $total = 0;
-  $target = strip_tags($_GET['url']);
+  $content = '';
+  $matches = '';
+
+  $url = strip_tags($_GET['url']);
   $email = strip_tags($_GET['email']);
-  $url = wash_url($target);
+  $url = wash_url($url);
 
   if (isset($url) && $url) {
     $content = get_page($url);
@@ -14,6 +17,7 @@ layout: default
       header('Location: /?error=content');
     }
   }
+
   $tests = array(
     'h1',
     'h2',
@@ -36,12 +40,14 @@ layout: default
     'background',
   );
 
-  //TODO: add total rules
   foreach ($tests as $test) {
     $matches[$test] = $count = substr_count($content, $test);
   }
   $total += $count;
+
+  $size = get_size(shell_exec("/usr/bin/uncss $url"));
 ?>
+
 <div class="wrap">
   <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $target; ?>&email=<?php echo $email; ?>">Rescan</a>
   <fieldset class="results">
@@ -54,7 +60,10 @@ layout: default
       ?>
     </ul>
     <ul>
-        <li>Total: <?php echo $total; ?></li>
+      <li>Total rules: <?php echo $total; ?></li>
+    </ul>
+    <ul>
+      <li>Size: <?php echo $size; ?></li>
     </ul>
   </fieldset>
 </div>
