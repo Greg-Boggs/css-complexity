@@ -5,20 +5,16 @@ layout: default
 <div class="home">
     <form action="scan.php" method="get">
         <fieldset>
-            <legend>CSS Complexity Calculator</legend>
+            <legend>How complex is your code?</legend>
             <div id="divTxt">
                 <div>
-                    <label for="url">CSS file:</label>
-                    <input class="input" name="url" id="url" />
+                    <label for="url">Target:</label>
+                    <input class="input" name="url" id="url" placeholder="example.com" />
                 </div>
             </div>
             <div>
-                <label for="email">Email:</label>
-                <input class="input" name="email" id="email" />
-            </div>
-            <div>
                 <label for="captcha"><img src="lib/captcha.php" alt="captcha image"></label>
-                <input class="input" type="text" name="captcha" maxlength="6" id="captcha" />
+                <input class="input" type="text" name="captcha" maxlength="6" id="captcha" placeholder="Retype it here" />
             </div>
             <div>
                 <input type="submit" class="submit" name="submit" id="submit" value="Scan CSS" />
