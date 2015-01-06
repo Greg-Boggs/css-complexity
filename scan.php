@@ -48,11 +48,17 @@ layout: default
       if (strtolower($css_file->getAttribute('rel')) == "stylesheet") {
 
         // Remove any questions
-        $arr = explode("?", $css_file->getAttribute('href'), 2);
+        $file_name = explode("?", $css_file->getAttribute('href'), 2);
+
+        // Add base URL if the path is relative
+        $pos = strpos($file_name[0], $url);
+        if ($pos === false) {
+          $file_name[0] = $url . '/' . $file_name[0];
+        }
 
         // Create a single stylesheet to make scoring faster to code.
         // This approach my break on huge sites. Maybe I should ajax 1 file at a time incrementally testing them.
-        $content .= get_page($arr[0]);
+        $content .= get_page($file_name[0]);
       }
     }
     if (empty($content)) {
