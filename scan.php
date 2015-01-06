@@ -41,28 +41,38 @@ layout: default
 
     // Load the remote file into a local document.Then extract all the CSS files
     // TODO: add support for CSS Import and inline styles
+    libxml_use_internal_errors(true);
     $doc->loadHTML(get_page($url));
     $css_files = $doc->getElementsByTagName('link');
     foreach ($css_files as $css_file) {
-      $i++;
       if (strtolower($css_file->getAttribute('rel')) == "stylesheet") {
+        $i++;
 
         // Remove any questions
         $file_name = explode("?", $css_file->getAttribute('href'), 2);
 
         // Add base URL if the path is relative
-        $pos = strpos($file_name[0], $url);
+        $pos = strpos($file_name[0], 'http');
         if ($pos === false) {
-          $file_name[0] = $url . '/' . $file_name[0];
+          $parse = parse_url($url);
+          if (!empty($parse['path'])) {
+            $path_parts = pathinfo($parse['path']);
+            if (!empty($path_parts['dirname'])) {
+              $file_name[0] = $parse['host'] . '/' . $path_parts['dirname'] . '/' . $file_name[0];
+            }
+          }
+          else {
+            $file_name[0] = $parse['host'] . '/' . $file_name[0];
+          }
         }
-
+        print('CSS File: ' . $file_name[0] . '<br />');
         // Create a single stylesheet to make scoring faster to code.
         // This approach my break on huge sites. Maybe I should ajax 1 file at a time incrementally testing them.
         $content .= get_page($file_name[0]);
       }
     }
     if (empty($content)) {
-      header('Location: /?error=content');
+      //header('Location: /?error=content');
     }
 
     // Some stack overflow code to tally the results.
@@ -79,7 +89,7 @@ layout: default
 ?>
 
 <div class="wrap">
-  <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $url; ?>&email=<?php echo $email; ?>">Rescan</a>
+  <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $url; ?>">Rescan</a>
   <fieldset class="results">
     <legend>Found <?php echo $i; ?> files on <?php echo $url; ?></legend>
     <ul>
