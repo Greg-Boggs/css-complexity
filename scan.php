@@ -3,21 +3,14 @@ layout: default
 ---
 <?php
   include ("lib/functions.php");
+  $url = '';
   $total = 0;
+  $total_size = 0;
+  $unused_size = 0;
+  $i = 0;
   $content = '';
-  $matches = '';
-
-  $url = strip_tags($_GET['url']);
-  $email = strip_tags($_GET['email']);
-  $url = wash_url($url);
-
-  if (isset($url) && $url) {
-    $content = get_page($url);
-    if (empty($content) ) {
-      header('Location: /?error=content');
-    }
-  }
-
+  $matches = array();
+  $doc = new DOMDocument();
   $tests = array(
     'h1',
     'h2',
@@ -38,20 +31,51 @@ layout: default
     'hex',
     '#fff',
     'background',
-  );
+    );
 
-  foreach ($tests as $test) {
-    $matches[$test] = $count = substr_count($content, $test);
+  if (isset($_GET['url']) && !empty($_GET['url'])) {
+    $url = strip_tags($_GET['url']);
+
+    // TODO: Improve test for valid domain.
+    $url = wash_url($url);
+
+    // Load the remote file into a local document.Then extract all the CSS files
+    // TODO: add support for CSS Import and inline styles
+    $doc->loadHTML(get_page($url));
+    $css_files = $doc->getElementsByTagName('link');
+    foreach ($css_files as $css_file) {
+      $i++;
+      if (strtolower($css_file->getAttribute('rel')) == "stylesheet") {
+
+        // Remove any questions
+        $arr = explode("?", $css_file->getAttribute('href'), 2);
+
+        // Create a single stylesheet to make scoring faster to code.
+        // This approach my break on huge sites. Maybe I should ajax 1 file at a time incrementally testing them.
+        $content .= get_page($arr[0]);
+      }
+    }
+    if (empty($content)) {
+      header('Location: /?error=content');
+    }
+
+    // Some stack overflow code to tally the results.
+    foreach ($tests as $test) {
+      $matches[$test] = $count = substr_count($content, $test);
+      $total += $count;
+    }
+
+    // Calculate unused CSS
+    $total_size = get_size($content);
+    $used_size = get_size(shell_exec("/usr/bin/uncss $url"));
+    $unused_size = $total_size - $used_size;
   }
-  $total += $count;
-
-  $size = get_size(shell_exec("/usr/bin/uncss $url"));
 ?>
 
 <div class="wrap">
-  <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $target; ?>&email=<?php echo $email; ?>">Rescan</a>
+  <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $url; ?>&email=<?php echo $email; ?>">Rescan</a>
   <fieldset class="results">
-    <legend>Scan Results for <?php echo $url; ?></legend>
+    <legend>Found <?php echo $i; ?> files on <?php echo $url; ?></legend>
     <ul>
       <?php foreach ($matches as $key => $match) { ?>
         <li><?php echo "$key: $match"; ?></li>
@@ -60,10 +84,11 @@ layout: default
       ?>
     </ul>
     <ul>
-      <li>Total rules: <?php echo $total; ?></li>
+      <li>Total CSS: <?php echo $total_size; ?> Bytes</li>
+      <li>Unused CSS: <?php echo $unused_size; ?> Bytes</li>
     </ul>
     <ul>
-      <li>Size: <?php echo $size; ?></li>
+      <li>Total rules: <?php echo $total; ?></li>
     </ul>
   </fieldset>
 </div>
