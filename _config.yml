@@ -3,7 +3,8 @@ title: CSS Complexity Calculator
 email: "http://www.gregboggs.com"
 description: "Scan your website's CSS to determine how complex your theme is. The better your code, the less complex your CSS."
 baseurl: ""
-url: "http://yourdomain.com"
+url: "http://css.gregboggs.com"
+username: "Greg-Boggs/css-complexity"
 
 # Build settings
 markdown: kramdown

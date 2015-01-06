@@ -5,7 +5,7 @@ layout: default
 <div class="home">
     <form action="scan.php" method="get">
         <fieldset>
-            <legend>How complex is your code?</legend>
+            <legend>How complex is your CSS?</legend>
             <div id="divTxt">
                 <div>
                     <label for="url">Target:</label>
@@ -21,9 +21,7 @@ layout: default
             </div>
         </fieldset>
     </form>
-
   <h1>Posts</h1>
-
   <ul class="posts">
     {% for post in site.posts %}
       <li>
@@ -32,7 +30,4 @@ layout: default
       </li>
     {% endfor %}
   </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-
 </div>
