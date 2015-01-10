@@ -502,6 +502,39 @@ legend {
   width:600px;
 }
 
-ul { list-style-type: none; }
+th {
+  font-weight: normal;
+}
+th, td {
+  padding: 7px 40px;
+}
 
-li { margin: 0 0 10px 20px; }
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+.score th {
+  border-top: black 1px solid;
+  border-left:  black 1px solid;
+  border-right: black 1px solid;
+}
+
+.score td {
+  border-bottom: black 1px solid;
+  border-left:  black 1px solid;
+  border-right: black 1px solid;
+  font-weight: bold;
+}
+
+.body td {
+  border: black 1px solid;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin: 0 0 10px 20px;
+}

@@ -65,7 +65,8 @@ layout: default
             $file_name[0] = $parse['host'] . '/' . $file_name[0];
           }
         }
-        print('CSS File: ' . $file_name[0] . '<br />');
+        // print('CSS File: ' . $file_name[0] . '<br />');
+
         // Create a single stylesheet to make scoring faster to code.
         // This approach my break on huge sites. Maybe I should ajax 1 file at a time incrementally testing them.
         $content .= get_page($file_name[0]);
@@ -85,6 +86,10 @@ layout: default
     $total_size = get_size($content);
     $used_size = get_size(shell_exec("/usr/bin/uncss $url"));
     $unused_size = $total_size - $used_size;
+
+    // Convert to KB
+    $unused_size = number_format($unused_size / 1024, 2);
+    $total_size = number_format($total_size / 1024, 2);
   }
 ?>
 
@@ -92,19 +97,31 @@ layout: default
   <a href="/">New Scan</a> | <a href="/scan.php?url=<?php echo $url; ?>">Rescan</a>
   <fieldset class="results">
     <legend>Found <?php echo $i; ?> files on <?php echo $url; ?></legend>
-    <ul>
+    <table class="score">
+      <tr>
+        <th>Score</th>
+        <th>Files</th>
+        <th>Size</th>
+      </tr>
+      <tr>
+        <td><?php echo $total; ?></td>
+        <td><?php echo $i; ?></td>
+        <td><?php echo $total_size; ?> KB</td>
+      </tr>
+    </table>
+    <table class="body">
+      <tr class="title">
+        <th>Selector</th>
+        <th>Count</th>
+      </tr>
       <?php foreach ($matches as $key => $match) { ?>
-        <li><?php echo "$key: $match"; ?></li>
+        <tr>
+          <td class="key"><?php echo $key; ?></td>
+          <td class="match"><?php echo $match; ?></td>
+        </tr>
       <?php
         }
       ?>
-    </ul>
-    <ul>
-      <li>Total CSS: <?php echo $total_size; ?> Bytes</li>
-      <li>Unused CSS: <?php echo $unused_size; ?> Bytes</li>
-    </ul>
-    <ul>
-      <li>Total rules: <?php echo $total; ?></li>
-    </ul>
+    </table>
   </fieldset>
 </div>

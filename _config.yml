@@ -4,7 +4,8 @@ email: "http://www.gregboggs.com"
 description: "Scan your website's CSS to determine how complex your theme is. The better your code, the less complex your CSS."
 baseurl: ""
 url: "http://css.gregboggs.com"
-username: "Greg-Boggs/css-complexity"
+github: "Greg-Boggs/css-complexity"
+twitter: "gregory_boggs"
 
 # Build settings
 markdown: kramdown
