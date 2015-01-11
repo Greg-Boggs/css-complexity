@@ -64,8 +64,8 @@ layout: default
 
     // Calculate unused CSS
     $total_size = get_size($content);
-    $used_size = get_size(shell_exec("/usr/bin/uncss $url"));
-    $unused_size = $total_size - $used_size;
+    //$used_size = get_size(shell_exec('/usr/bin/uncss' . escapeshellarg(string $url)));
+    //$unused_size = $total_size - $used_size;
 
     // Convert to KB
     $unused_size = number_format($unused_size / 1024, 2);

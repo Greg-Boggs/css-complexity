@@ -1,7 +1,7 @@
 # Site settings
 title: CSS Complexity Calculator
 email: "http://www.gregboggs.com"
-description: "Scan your website's CSS to determine how complex your theme is. The better your code, the less complex your CSS."
+description: "This scanner will run the numbers on your CSS complexity. A lower score is better."
 baseurl: ""
 url: "http://css.gregboggs.com"
 github: "Greg-Boggs/css-complexity"

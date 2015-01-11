@@ -52,7 +52,9 @@ function get_css($url, &$i = 0) {
         if (strtolower($link->getAttribute('rel')) == "stylesheet") {
             $i++;
             $file_name = $link->getAttribute('href');
+
             $file_name = clean_name($url, $file_name);
+            print $file_name . '<br />';
             $css .= get_page($file_name);
         }
     }
