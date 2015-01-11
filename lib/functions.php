@@ -41,6 +41,53 @@ function get_page($url) {
     }
 }
 
+function get_css($url, &$i = 0) {
+    $css = '';
+    $doc = new DOMDocument();
+
+    libxml_use_internal_errors(true);
+    $doc->loadHTML(get_page($url));
+    $links = $doc->getElementsByTagName('link');
+    foreach ($links as $link) {
+        if (strtolower($link->getAttribute('rel')) == "stylesheet") {
+            $i++;
+            $file_name = $link->getAttribute('href');
+            $file_name = clean_name($url, $file_name);
+            $css .= get_page($file_name);
+        }
+    }
+    $page = (get_page($url));
+    preg_match_all('/url\(\"([^)]+)\"\)/', $page, $matches);
+    foreach($matches[1] as $css_file) {
+        $i++;
+        $file_name = clean_name($url, $css_file);
+        $css .= get_page($file_name);
+    }
+
+    return $css;
+}
+
+function clean_name($url, $file_name) {
+
+    // Remove any questions
+    $file_name = explode("?", $file_name, 2);
+
+    // Add base URL if the path is relative
+    $pos = strpos($file_name[0], 'http');
+    if ($pos === false) {
+        $parse = parse_url($url);
+        if (!empty($parse['path'])) {
+            $path_parts = pathinfo($parse['path']);
+            if (!empty($path_parts['dirname'])) {
+                $file_name[0] = $parse['host'] . '/' . $path_parts['dirname'] . '/' . $file_name[0];
+            }
+        } else {
+            $file_name[0] = $parse['host'] . '/' . $file_name[0];
+        }
+    }
+
+    return $file_name[0];
+}
 function post_page($url, $user, $pass) {
     $post_items = array();
 

@@ -518,6 +518,7 @@ table {
   border-top: black 1px solid;
   border-left:  black 1px solid;
   border-right: black 1px solid;
+  padding-bottom: 0;
 }
 
 .score td {
@@ -525,6 +526,7 @@ table {
   border-left:  black 1px solid;
   border-right: black 1px solid;
   font-weight: bold;
+  padding-top: 0;
 }
 
 .body td {
