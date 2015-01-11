@@ -43,17 +43,21 @@ layout: default
     );
 
   if (isset($_GET['url']) && !empty($_GET['url'])) {
-    $url = strip_tags($_GET['url']);
 
     // TODO: Improve test for valid domain.
     $url = wash_url($url);
+    if (empty($url)) {
+      header('Location: /?error=url');
+      die();
+    }
 
     // Load the remote file into a local document.Then extract all the CSS files
     // TODO: add support for CSS Import and inline styles
     $content = get_css($url, $i);
     }
     if (empty($content)) {
-      //header('Location: /?error=content');
+      header('Location: /?error=content');
+      die();
     }
 
     // Some stack overflow code to tally the results.

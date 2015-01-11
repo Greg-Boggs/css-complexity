@@ -1,8 +1,13 @@
 ---
 layout: default
 ---
-
 <div class="home">
+
+    <?php
+      if (isset($_GET['error']) && $_GET['error'] == 'url' || $_GET['error'] == 'content') {
+        print ('<p>There was a problem with the ' . $_GET['error'] . '.</p>');
+      }
+    ?>
     <form action="scan.php" method="get">
         <fieldset>
             <legend>How complex is your CSS?</legend>

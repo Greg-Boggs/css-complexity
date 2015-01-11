@@ -5,8 +5,12 @@ include('common.php');
 // Make the URL valid if http is missing, and check to make sure the result is a URL before requesting it
 function wash_url($url) {
 
-    //check to see if the address has http:// add it if not.
-    $url = (substr(ltrim($url), 0, 7) != 'http://' ? 'http://' : '') . $url;
+    $url = strip_tags($_GET['url']);
+    $url = trim($url, '!"#$%&\'()*+,-./@:;<=>[\\]^_`{|}~');
+    $url = check_plain($url);
+
+    //check to see if the address has http add it if not.
+    $url = (substr(ltrim($url), 0, 4) != 'http' ? 'http://' : '') . $url;
 
     if ( is_url($url) ) {
         return $url;
@@ -16,6 +20,11 @@ function wash_url($url) {
 function is_url($url) {
 
     return preg_match(URL_MATCH, $url);
+}
+
+function check_plain($text) {
+
+    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
 // Grab the URL
