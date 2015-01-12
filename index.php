@@ -1,10 +1,10 @@
 ---
 layout: default
 ---
+<?php  session_start(); ?>
 <div class="home">
-
     <?php
-      if (isset($_GET['error']) && $_GET['error'] == 'url' || $_GET['error'] == 'content') {
+      if (isset($_GET['error']) && $_GET['error'] == 'url' || $_GET['error'] == 'content' || $_GET['error'] == 'captcha') {
         print ('<p>There was a problem with the ' . $_GET['error'] . '.</p>');
       }
     ?>
@@ -19,7 +19,7 @@ layout: default
             </div>
             <div>
                 <label for="captcha"><img src="lib/captcha.php" alt="captcha image"></label>
-                <input class="input" type="text" name="captcha" maxlength="6" id="captcha" placeholder="Retype it here" />
+                <input class="input" type="text" name="captcha" maxlength="6" id="captcha" placeholder="Retype the captcha" />
             </div>
             <div>
                 <input type="submit" class="submit" name="submit" id="submit" value="Scan CSS" />

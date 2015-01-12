@@ -2,6 +2,7 @@
 layout: default
 ---
 <?php
+  session_start();
   include ("lib/functions.php");
   $url = '';
   $total = 0;
@@ -42,6 +43,17 @@ layout: default
     'background',
     );
 
+  /** Validate captcha */
+  if (!$_SESSION['human']
+        && (empty($_REQUEST['captcha'])
+        || empty($_SESSION['captcha'])
+        || trim(strtolower($_REQUEST['captcha'])) != $_SESSION['captcha'])) {
+    header('Location: /?error=captcha');
+    die();
+  }
+  else {
+    $_SESSION['human'] = true;
+  }
   if (isset($_GET['url']) && !empty($_GET['url'])) {
 
     // TODO: Improve test for valid domain.
